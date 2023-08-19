@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "586648017861",
+    "project_id": "rana-flutter-chat",
+    "storage_bucket": "rana-flutter-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586648017861:android:b5f17b9719b42e795c89ac",
+        "android_client_info": {
+          "package_name": "com.example.my_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586648017861-7ncb4njno1vi4rjde99v64ugdl32clpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRq0NcQ18xqGTcWKATUR3wNla5_6FHY1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586648017861-7ncb4njno1vi4rjde99v64ugdl32clpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
