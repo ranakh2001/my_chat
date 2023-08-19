@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 
 import 'package:my_chat/constants.dart';
@@ -10,6 +11,7 @@ class MyTextField extends StatefulWidget {
   String hint;
   IconData icon;
   bool scureText;
+  String? Function(String?)? validate;
   MyTextField({
     Key? key,
     required this.controller,
@@ -17,6 +19,7 @@ class MyTextField extends StatefulWidget {
     required this.hint,
     required this.icon,
     required this.scureText,
+    required this.validate,
   }) : super(key: key);
 
   @override
@@ -33,7 +36,8 @@ class _MyTextFieldState extends State<MyTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: widget.validate,
       obscureText: visible,
       keyboardType: widget.keyboardType,
       controller: widget.controller,
@@ -44,7 +48,6 @@ class _MyTextFieldState extends State<MyTextField> {
                   onPressed: () {
                     setState(() {
                       visible = !visible;
-                     
                     });
                   },
                   icon: Icon(visible

@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/constants.dart';
+import 'package:my_chat/controllers/chatData.dart';
+import 'package:my_chat/screens/chat_screen.dart';
+import 'package:my_chat/screens/loading_screen.dart';
 import 'package:my_chat/screens/login.dart';
 import 'package:my_chat/screens/main_screen.dart';
 import 'package:my_chat/screens/signup.dart';
@@ -22,21 +25,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AuthData>(
-      create: (context) =>AuthData() ,
-    
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: kPrinmaryColor),
-          useMaterial3: true,
+      create: (context) => AuthData(),
+      child: ChangeNotifierProvider<ChatData>(
+        create: (context) => ChatData(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: kPrinmaryColor),
+            useMaterial3: true,
+          ),
+          home: const LoadingScreen(),
+          routes: {
+            LoginScreen.id: (context) => LoginScreen(),
+            SignUpScreen.id: (context) => SignUpScreen(),
+            MainScreen.id: (context) => const MainScreen(),
+            ChatScreen.id: (context) =>  ChatScreen()
+          },
         ),
-        home:const LoginScreen(),
-        routes: {
-          LoginScreen.id:(context)=> const LoginScreen(),
-          SignUpScreen.id: (context) => const SignUpScreen(),
-          MainScreen.id: (context) => const MainScreen(),
-        },
       ),
     );
   }

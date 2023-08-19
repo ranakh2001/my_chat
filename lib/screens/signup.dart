@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/constants.dart';
 import 'package:my_chat/controllers/authData.dart';
@@ -7,40 +8,16 @@ import 'package:provider/provider.dart';
 import '../widgets/logo_widget.dart';
 import '../widgets/my_elevated_button.dart';
 
-class SignUpScreen extends StatefulWidget {
+// ignore: must_be_immutable
+class SignUpScreen extends StatelessWidget {
   static const id = '/signUpScreen';
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  late TextEditingController emailController;
-  late TextEditingController nameController;
-  late TextEditingController phoneController;
-
-  late TextEditingController passwordController;
-  late TextEditingController password2Controller;
-  @override
-  void initState() {
-    emailController = TextEditingController();
-    nameController = TextEditingController();
-    phoneController = TextEditingController();
-    passwordController = TextEditingController();
-    password2Controller = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    nameController.dispose();
-    phoneController.dispose();
-    passwordController.dispose();
-    password2Controller.dispose();
-    super.dispose();
-  }
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController password2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,51 +52,94 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: MyTextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  hint: 'email',
-                  icon: Icons.person_outline,
-                  scureText: false),
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                hint: 'email',
+                icon: Icons.person_outline,
+                scureText: false,
+                validate: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "Please enter the email";
+                  } else if (!EmailValidator.validate(val)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: MyTextField(
-                  controller: nameController,
-                  keyboardType: TextInputType.name,
-                  hint: 'Username',
-                  icon: Icons.person_outline,
-                  scureText: false),
+                controller: nameController,
+                keyboardType: TextInputType.name,
+                hint: 'Username',
+                icon: Icons.person_outline,
+                scureText: false,
+                validate: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "Please enter your user name";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: MyTextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.number,
-                  hint: 'Phone number',
-                  icon: Icons.phone_rounded,
-                  scureText: false),
+                controller: phoneController,
+                keyboardType: TextInputType.number,
+                hint: 'Phone number',
+                icon: Icons.phone_rounded,
+                scureText: false,
+                validate: (val) {
+                  if (val!.isEmpty) {
+                    return "Please enter your phone number";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: MyTextField(
-                  controller: passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  hint: 'password',
-                  icon: Icons.key,
-                  scureText: true),
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                hint: 'password',
+                icon: Icons.key,
+                scureText: true,
+                validate: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "Please enter your pssword";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: MyTextField(
-                  controller: password2Controller,
-                  keyboardType: TextInputType.visiblePassword,
-                  hint: 'Re-write password',
-                  icon: Icons.key,
-                  scureText: true),
+                controller: password2Controller,
+                keyboardType: TextInputType.visiblePassword,
+                hint: 'Re-write password',
+                icon: Icons.key,
+                scureText: true,
+                validate: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "Please enter your password";
+                  } else if (val != passwordController.text) {
+                    return "Verify the entered password";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
             ),
             Padding(
               padding:
@@ -133,6 +153,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           phoneController.text,
                           nameController.text,
                           context);
+
+                
                 },
                 title: 'Sign Up',
                 bgColor: kPrinmaryColor,

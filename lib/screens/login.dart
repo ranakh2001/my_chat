@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/constants.dart';
@@ -9,30 +10,14 @@ import '../widgets/logo_widget.dart';
 import '../widgets/my_elevated_button.dart';
 import '../widgets/my_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
+// ignore: must_be_immutable
+class LoginScreen extends StatelessWidget {
   static const id = '/login';
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
-  @override
-  void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +31,23 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: MyTextField(
-                  controller: emailController,
-                  hint: 'E-mail',
-                  icon: Icons.person_outline,
-                  keyboardType: TextInputType.emailAddress,
-                  scureText: false,
+                child: Form(
+                  key: key,
+                  child: MyTextField(
+                    controller: emailController,
+                    hint: 'E-mail',
+                    icon: Icons.person_outline,
+                    keyboardType: TextInputType.emailAddress,
+                    scureText: false,
+                    validate: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "Please enter the email";
+                      } else if (!EmailValidator.validate(val)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
               Padding(
@@ -63,6 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: Icons.key,
                   keyboardType: TextInputType.emailAddress,
                   scureText: true,
+                  validate: (val) {
+                    if (val == null || val.isEmpty) {
+                      return "Please enter the password";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
               ),
               TextButton(
@@ -79,10 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
                 child: MyElevatedButton(
                   function: () async {
-                    // await Provider.of<AuthData>(context,listen: false)
-                    //     .loginWithEmailAndPassword(emailController.text,
-                    //         passwordController.text, context);
-                    Provider.of<AuthData>(context,listen: false).signout();
+                    await Provider.of<AuthData>(context, listen: false)
+                        .loginWithEmailAndPassword(emailController.text,
+                            passwordController.text, context);
                   },
                   title: 'Sign In',
                   bgColor: kPrinmaryColor,
